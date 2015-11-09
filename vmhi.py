@@ -1,5 +1,7 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# this has been tested against python 2.7 and python 3.x
+# those seeking convenience should set the execute bit and copy
+# this to their local bin
 
 """Shows the processes using swap space."""
 
