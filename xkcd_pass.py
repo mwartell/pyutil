@@ -8,7 +8,7 @@ import random
 import wordlist
 
 
-def correct_horse_battery_staple(words, word_count)
+def correct_horse_battery_staple(words, word_count):
     """Return n cryptographically "strong" shorter words from the standard list
     without repeats as suggested in https://xkcd.com/936/
     """
