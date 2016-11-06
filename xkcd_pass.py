@@ -2,20 +2,16 @@
 
 """Create a passphase in the style of xkcd 'correct horse battery staple'"""
 
-from __future__ import print_function
 import sys
 import random
 
 import wordlist
 
 
-def correct_horse_battery_staple(word_count):
+def correct_horse_battery_staple(words, word_count)
     """Return n cryptographically "strong" shorter words from the standard list
     without repeats as suggested in https://xkcd.com/936/
     """
-    words = wordlist.WordList('google10000')
-    words = [x for x in words if 4 <= len(x) <= 7]
-    print('selected words = {}'.format(len(words)))
     passphrase = []
     # use the system entropy generator, usually /dev/random
     sys_rand = random.SystemRandom()
@@ -42,4 +38,7 @@ if __name__ == '__main__':
         print('    n must be an integer', file=sys.stderr)
         sys.exit(1)
 
-    print(' '.join(correct_horse_battery_staple(n)))
+    words = wordlist.WordList('google10000')
+    words = [x for x in words if 4 <= len(x) <= 7]
+    print('selected words = {}'.format(len(words)))
+    print(' '.join(correct_horse_battery_staple(words, n)))
