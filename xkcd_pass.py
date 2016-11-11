@@ -2,6 +2,8 @@
 
 """Create a passphase in the style of xkcd 'correct horse battery staple'"""
 
+from __future__ import print_function
+
 import sys
 import random
 
@@ -39,6 +41,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     words = wordlist.WordList('google10000')
+    # limiting length of words from the list drops most stop words
+    # and eliminates "sesquipedelian" at the cost of having the wordlist
     words = [x for x in words if 4 <= len(x) <= 7]
-    print('selected words = {}'.format(len(words)))
+    print('dictionary size = {}'.format(len(words)))
     print(' '.join(correct_horse_battery_staple(words, n)))
