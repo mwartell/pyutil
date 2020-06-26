@@ -6,17 +6,16 @@ import bz2
 import random
 import re
 import string
+from typing import List, Dict, Callable, Tuple, Any
 
-__all__ = ['WordList']
 
-
-def _parse_words(seq, line):
+def _parse_words(seq: List[str], line: str) -> None:
     """if line is all lowercase add it to seq."""
     if all(c in string.ascii_lowercase for c in line):
         seq.append(line)
 
 
-def _parse_wonderland(seq, line):
+def _parse_wonderland(seq: List[str], line: str) -> None:
     """remove punctuation from line and add its words to seq."""
     line = line.strip()
     # if punctuation occurs within a word, kill it, outside a word space it
@@ -32,12 +31,14 @@ def _parse_wonderland(seq, line):
     seq.extend(line.lower().split())
 
 
-def _parse_surnames(seq, line):
+def _parse_surnames(seq: List[str], line: str) -> None:
     """add lowercased first element of line to self"""
     seq.append(line.split()[0].lower())
 
 
-_SOURCES = {
+ListParser = Tuple[str, Callable[[List[str], str], None]]
+
+_SOURCES: Dict[str, ListParser] = {
     # shortname: (data-file, parsing-function)
     'words': ('/usr/share/dict/words', _parse_words),
     'google10000': ('./worddata/google-10000-english.txt', _parse_words),
@@ -47,7 +48,9 @@ _SOURCES = {
 
 # standard small listing of frequently used "uninteresting" words
 # TODO: do these want to be used or not?
-_STOP_WORDS = """a able about across after all almost also am among an
+_STOP_WORDS: List[
+    str
+] = """a able about across after all almost also am among an
     and any are as at be because been but by can cannot could
     dear did do does either else ever every for from get got
     had has have he her hers him his how however i if in into
@@ -59,40 +62,40 @@ _STOP_WORDS = """a able about across after all almost also am among an
     whom why will with would yet you your""".split()
 
 
-class WordList(list):
+class WordList(List[str]):
     """a list of lowercase, unpunctuated words from a known source"""
 
-    def _load_source(self, source):
+    def _load_source(self, source: str) -> None:
         """read a worlist from a named, known database"""
         filename, parser = _SOURCES[source]
 
         # we can handle compressed sources
         if filename.endswith('.bz2'):
-            openf = bz2.BZ2File
+            openf: Any = bz2.BZ2File
         else:
             openf = open
 
         # open the file decompressing as needed, call the specific parser
         with openf(filename) as infile:
             for line in infile:
-                line = line.rstrip()
-                if not line:
+                sline: str = str(line).rstrip()
+                if not sline:
                     continue
-                parser(self, line)
+                parser(self, sline)
 
-    def __init__(self, source='words'):
+    def __init__(self, source: str = 'words'):
         """create a wordlist from a predefined source"""
         # use a private RNG because this is a module and we don't want
         # to muck with the global RNG which may be in use
         super(WordList, self).__init__()
-        self._myrand = random.Random()
-        self.source = source
+        self._myrand: random.Random = random.Random()
+        self.source: str = source
 
         self._load_source(source)
 
-    def shuffle(self):
+    def shuffle(self) -> None:
         """Shuffles the wordlist in place.
-        note: the total number of permutations of the list is larger
+        note: the total number of permutations of the list is likely larger
         than the period of the random number generators; this implies
         that most permutations can never be generated.
 
@@ -100,23 +103,21 @@ class WordList(list):
         """
         self._myrand.shuffle(self)
 
-    def partition(self, partitions):
+    def _partition(self, partitions: int) -> List[List[str]]:
         """Return a list containing partitions disjoint subsets of wordlist.
         Will destory random elements of the self to ensure
         equal length subsets are returned.
-        """
-        # throw away random items to make len(self) a multiple of partitions
-        while len(self) % partitions:
-            kill = self._myrand.choice(self)
-            self.remove(kill)
 
+        If the list does not evenly divide into partitions, excess elements
+        at the end will be dropped.
+        """
         psize = len(self) // partitions
         parts = []
         for i in range(0, len(self), psize):
             parts.append(self[i : i + psize])
         return parts
 
-    def dict(self):
+    def dict(self) -> Dict[str, str]:
         """Return a dictionary made of pairings of the list."""
-        key, value = self.partition(2)
+        key, value = self._partition(2)
         return dict(zip(key, value))
