@@ -1,8 +1,7 @@
-#!/usr/bin/python2
+#!python3
 """A library for the easy generation of lists of words from known sources
    for testing purposes"""
 
-from __future__ import print_function
 import bz2
 import random
 import re
@@ -13,7 +12,6 @@ __all__ = ['WordList']
 
 def _parse_words(seq, line):
     """if line is all lowercase add it to seq."""
-    # blank lines are thrown out by the caller so we needn't check
     if all(c in string.ascii_lowercase for c in line):
         seq.append(line)
 
@@ -112,10 +110,10 @@ class WordList(list):
             kill = self._myrand.choice(self)
             self.remove(kill)
 
-        psize = len(self)//partitions
+        psize = len(self) // partitions
         parts = []
         for i in range(0, len(self), psize):
-            parts.append(self[i:i+psize])
+            parts.append(self[i : i + psize])
         return parts
 
     def dict(self):
