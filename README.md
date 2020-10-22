@@ -2,7 +2,7 @@ A toy library that I use as a means to explore ASTs, typing,
 and now CI. The implementation is really overwrought for the
 task.
 
-https://github.com/mwartell/wordlist/workflows/Python%20package/badge.svg
+![python package](https://github.com/mwartell/wordlist/workflows/Python%20package/badge.svg)
 
 
 # wordlist
