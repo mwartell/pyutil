@@ -4,13 +4,15 @@ task.
 
 ![python package](https://github.com/mwartell/wordlist/workflows/Python%20package/badge.svg)
 
-
 # wordlist
+
 Generates lists of words from a variety of sources for test purposes.
 
 ## sources
+
  - google-1000-english.txt https://github.com/first20hours/google-10000-english
 
 # xkcd_pass
+
 Yet another implementation of "correct horse battery staple" from xkcd using
 the WordList class.
