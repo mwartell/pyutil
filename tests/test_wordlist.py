@@ -1,6 +1,5 @@
-import pytest
 
-import wordlist
+from wordlist import wordlist
 
 
 def test_default_list():

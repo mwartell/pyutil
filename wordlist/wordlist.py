@@ -20,14 +20,14 @@ def _parse_wonderland(seq: List[str], line: str) -> None:
     line = line.strip()
     # if punctuation occurs within a word, kill it, outside a word space it
     # a string of puntuation suitably quoted for a regexp
-    _punct_re = '[' + re.escape(string.punctuation) + ']+'
+    _punct_re = "[" + re.escape(string.punctuation) + "]+"
 
     # cpython caches the most recent compiled regexps so
     # this isn't as inefficient as it seems
-    line = re.sub(r'(\w)%s(\w)' % _punct_re, r'\1\2', line)
-    line = re.sub(r'[\s\b]%s' % _punct_re, ' ', line)
-    line = re.sub(r'%s[\s\b]' % _punct_re, ' ', line)
-    line = re.sub(r'(^%s)|(%s$)' % (_punct_re, _punct_re), ' ', line)
+    line = re.sub(r"(\w)%s(\w)" % _punct_re, r"\1\2", line)
+    line = re.sub(r"[\s\b]%s" % _punct_re, " ", line)
+    line = re.sub(r"%s[\s\b]" % _punct_re, " ", line)
+    line = re.sub(r"(^%s)|(%s$)" % (_punct_re, _punct_re), " ", line)
     seq.extend(line.lower().split())
 
 
@@ -40,10 +40,10 @@ ListParser = Tuple[str, Callable[[List[str], str], None]]
 
 _SOURCES: Dict[str, ListParser] = {
     # shortname: (data-file, parsing-function)
-    'words': ('/usr/share/dict/words', _parse_words),
-    'google10000': ('./worddata/google-10000-english.txt', _parse_words),
-    'surnames': ('./worddata/us1990.surnames.raw.bz2', _parse_surnames),
-    'wonderland': ('./worddata/wonderland.txt.bz2', _parse_wonderland),
+    "words": ("/usr/share/dict/words", _parse_words),
+    "google10000": ("../wordlist/worddata/google-10000-english.txt", _parse_words),
+    "surnames": ("./worddata/us1990.surnames.raw.bz2", _parse_surnames),
+    "wonderland": ("./worddata/wonderland.txt.bz2", _parse_wonderland),
 }
 
 # standard small listing of frequently used "uninteresting" words
@@ -70,20 +70,27 @@ class WordList(List[str]):
         filename, parser = _SOURCES[source]
 
         # we can handle compressed sources
-        if filename.endswith('.bz2'):
+        if filename.endswith(".bz2"):
             openf: Any = bz2.BZ2File
         else:
             openf = open
 
+        def data_file_name(name):
+            """return a path relative to this running script."""
+            import os.path
+
+            root = os.path.abspath(os.path.dirname(__file__))
+            return os.path.join(root, name)
+
         # open the file decompressing as needed, call the specific parser
-        with openf(filename) as infile:
+        with openf(data_file_name(filename)) as infile:
             for line in infile:
                 sline: str = str(line).rstrip()
                 if not sline:
                     continue
                 parser(self, sline)
 
-    def __init__(self, source: str = 'words'):
+    def __init__(self, source: str = "words"):
         """create a wordlist from a predefined source"""
         # use a private RNG because this is a module and we don't want
         # to muck with the global RNG which may be in use
