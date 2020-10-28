@@ -42,7 +42,7 @@ def main():
         print("    n must be an integer", file=sys.stderr)
         sys.exit(1)
 
-    words = wordlist.WordList("google10000")
+    words = wordlist.WordList("words")
     # limiting length of words from the list drops most stop words
     # and eliminates "sesquipedelian" at the cost of having the wordlist
     words = [x for x in words if 4 <= len(x) <= 7]

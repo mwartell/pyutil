@@ -33,5 +33,5 @@ test = [
 ]
 
 [tool.flit.scripts]
-wordlist = "wordlist:main"
-xkcd-pass = "xkcd_pass:main"
+wordlist = "wordlist.__main__:main"
+xkcd-pass = "wordlist.xkcd_pass:main"
