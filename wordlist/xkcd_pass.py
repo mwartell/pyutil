@@ -7,7 +7,7 @@ from __future__ import print_function
 import sys
 import random
 
-from pyutil import wordlist
+from . import wordlist
 
 
 def correct_horse_battery_staple(words, word_count):

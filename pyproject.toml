@@ -6,7 +6,7 @@ build-backend = "flit_core.buildapi"
 module = "wordlist"
 author = "matt wartell"
 author-email = "matt.wartell@gmail.com"
-home-page = "https://github.com/mwartell"
+home-page = "https://github.com/mwartell/wordlist"
 classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
@@ -15,6 +15,13 @@ classifiers = [
 ]
 description-file = "README.md"
 requires-python= ">=3.6"
+
+[tool.flit.sdist]
+exclude = [
+    ".github",
+    ".gitignore",
+    "stubs",
+]
 
 [tool.flit.metadata.requires-extra]
 dev = [
@@ -26,4 +33,5 @@ test = [
 ]
 
 [tool.flit.scripts]
-worlist = "wordlist:main"
+wordlist = "wordlist:main"
+xkcd-pass = "xkcd_pass:main"
