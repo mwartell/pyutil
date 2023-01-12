@@ -22,7 +22,7 @@ def correct_horse_battery_staple(words, word_count):
 
 def main():
     if len(sys.argv) != 2:
-        print("usage: {} n".format(sys.argv[0]), file=sys.stderr)
+        print(f"usage: {sys.argv[0]} n", file=sys.stderr)
         print("   where n is the number of cryptographically secure", file=sys.stderr)
         print("   choices from the wordlist.", file=sys.stderr)
         sys.exit(1)
@@ -30,7 +30,7 @@ def main():
     try:
         n = int(sys.argv[1])
     except ValueError:
-        print("usage: {} n".format(sys.argv[0]), file=sys.stderr)
+        print(f"usage: {sys.argv[0]} n", file=sys.stderr)
         print("    n must be an integer", file=sys.stderr)
         sys.exit(1)
 
