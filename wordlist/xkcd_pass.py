@@ -1,8 +1,4 @@
-#!/usr/bin/python3
-
 """Create a passphase in the style of xkcd 'correct horse battery staple'"""
-
-from __future__ import print_function
 
 import sys
 import random
@@ -28,7 +24,7 @@ def main():
     if len(sys.argv) != 2:
         print("usage: {} n".format(sys.argv[0]), file=sys.stderr)
         print("   where n is the number of cryptographically secure", file=sys.stderr)
-        print("   choices from the wordlist." file=sys.stderr)
+        print("   choices from the wordlist.", file=sys.stderr)
         sys.exit(1)
 
     try:
@@ -42,7 +38,7 @@ def main():
     # limiting length of words from the list drops most stop words
     # and eliminates "sesquipedelian" at the cost of having the wordlist
     words = [x for x in words if 4 <= len(x) <= 7]
-    print("dictionary size = {}".format(len(words)))
+    print(f"dictionary size = {len(words)}")
     print(" ".join(correct_horse_battery_staple(words, n)))
 
 
